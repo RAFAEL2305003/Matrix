@@ -1,4 +1,4 @@
-# MatrixLib
+# Matrix
 A Matrix library written in C++
 
 ## What is included
