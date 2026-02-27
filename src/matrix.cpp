@@ -1,5 +1,5 @@
-#include "matrix.h"
-#include "random.h"
+#include "../include/matrix.h"
+#include "../include/random.h"
 
 /**
  * Usage example
