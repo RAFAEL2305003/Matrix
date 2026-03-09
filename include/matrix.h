@@ -74,7 +74,7 @@ class Matrix
          * @param j Column index
          * @return A reference to item itself
          */
-        double& operator()(std::size_t i, std::size_t j)
+        T& operator()(std::size_t i, std::size_t j)
         {
             assert(i < rows && j < cols);
             return elements[i * cols + j];
@@ -88,7 +88,7 @@ class Matrix
          * @param j Column index
          * @return A const reference to item itself
          */
-        const double& operator()(std::size_t i, std::size_t j) const
+        const T& operator()(std::size_t i, std::size_t j) const
         {
             assert(i < rows && j < cols);
             return elements[i * cols + j];
@@ -112,7 +112,7 @@ class Matrix
                 }
             }
 
-            Matrix r(rows, cols, new_elements);
+            Matrix r(cols, rows, new_elements);
             return r;
         }
 
@@ -122,6 +122,24 @@ class Matrix
          * Print (*this) Matrix
          */
         void print()
+        {
+            for(std::size_t i = 0; i < rows; i++)
+            {
+                std::cout << "[";
+                for(std::size_t j = 0; j < cols; j++)
+                {
+                    std::cout << elements[i * cols + j];
+                    if(j != cols - 1)
+                    {
+                        std::cout << " ";
+                    }
+                }
+                std::cout << "]\n";
+            }
+            std::cout << "\n";
+        }
+ 
+        void print() const
         {
             for(std::size_t i = 0; i < rows; i++)
             {
@@ -200,7 +218,7 @@ bool operator==(const Matrix<T>& a, const Matrix<T>& b)
  * @return The Matrix after the operation
  */
 template<typename T>
-Matrix<T> operator*=(double num, Matrix<T>& a)
+Matrix<T> operator*=(Matrix<T>& a, double num)
 {
     auto [rows, cols] = a.shape();
     for(std::size_t i = 0; i < rows; i++)
@@ -214,30 +232,24 @@ Matrix<T> operator*=(double num, Matrix<T>& a)
     return a;
 }
 
-/**
- * Multiply a Matrix for a scalar
- *
- * @param a The Matrix to operate
- * @param num The scalar
- * @return The Matrix after the operation
- */
 template<typename T>
-Matrix<T> operator*(double num, Matrix<T>& a)
+Matrix<T> operator*(double num, const Matrix<T>& a)
 {
     auto [rows, cols] = a.shape();
+    Matrix<T> r(rows, cols);
     for(std::size_t i = 0; i < rows; i++)
     {
         for(std::size_t j = 0; j < cols; j++)
         {
-            a(i, j) = a(i, j) * num;
+            r(i, j) = a(i, j) * num;
         }
     }
 
-    return a;
+    return r;
 }
 
 /**
- * Multiply a Matrix for a scalar
+ * Multiply a Matrix for a scalar(overload of above)
  *
  * @param a The Matrix to operate
  * @param num The scalar
@@ -266,8 +278,8 @@ Matrix<T> operator*(Matrix<T>& a, double num)
  * @param b Second operand
  * @return The Matrix after add
  */
-template<typename T>
-Matrix<T> operator+(const Matrix<T>& a, const Matrix<T>& b)
+template<typename T, typename U>
+Matrix<T> operator+(const Matrix<T>& a, const Matrix<U>& b)
 {
     auto [a_rows, a_cols] = a.shape();
     auto [b_rows, b_cols] = b.shape();
@@ -301,7 +313,7 @@ Matrix<T> operator-(const Matrix<T>& a, const Matrix<T>& b)
     auto [b_rows, b_cols] = b.shape();
     assert(a_rows == b_rows && a_cols == b_cols);
 
-    Matrix c(a_rows, a_cols);
+    Matrix<T> c(a_rows, a_cols);
     auto [rows, cols] = c.shape();
     for(std::size_t i = 0; i < rows; i++)
     {
@@ -323,8 +335,8 @@ Matrix<T> operator-(const Matrix<T>& a, const Matrix<T>& b)
  * @param b Second operand
  * @return The Matrix after operation
  */
-template<typename T>
-Matrix<T> hadamard(const Matrix<T>& a, const Matrix<T>& b)
+template<typename T, typename U>
+Matrix<T> hadamard(const Matrix<U>& a, const Matrix<T>& b)
 {
     auto [a_rows, a_cols] = a.shape();
     auto [b_rows, b_cols] = b.shape();
@@ -342,6 +354,26 @@ Matrix<T> hadamard(const Matrix<T>& a, const Matrix<T>& b)
                 sum += a(i, k) * b(k, j);
             }
             c(i, j) = sum;
+        }
+    }
+
+    return c;
+}
+
+template<typename T, typename U>
+Matrix<T> operator*(const Matrix<U>& a, const Matrix<T>& b)
+{
+    auto [a_rows, a_cols] = a.shape();
+    auto [b_rows, b_cols] = b.shape();
+    assert((a_rows == b_rows) && (a_cols == b_cols));
+
+    Matrix<T> c(a_rows, a_cols);
+    auto [rows, cols] = c.shape();
+    for(std::size_t i = 0; i < rows; i++)
+    {
+        for(std::size_t j = 0; j < cols; j++)
+        {
+            c(i, j) = a(i, j) * b(i, j);
         }
     }
 
