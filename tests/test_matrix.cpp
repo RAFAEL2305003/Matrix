@@ -18,5 +18,8 @@ int main (int argc, char *argv[]) {
     // Identity element
     assert(A == A + Z);
 
+    // scalar multiplication
+    assert(0.0 * A == Z);
+
     return 0;
 }

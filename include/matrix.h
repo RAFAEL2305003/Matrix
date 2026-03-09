@@ -178,12 +178,37 @@ bool operator==(const Matrix<T>& a, const Matrix<T>& b)
  * @return The Matrix after the operation
  */
 template<typename T>
-Matrix<T> operator*=(Matrix<T>& a, double num)
+Matrix<T> operator*=(double num, Matrix<T>& a)
 {
     auto [rows, cols] = a.shape();
-    for(std::size_t i = 0; i < rows * cols; i++)
+    for(std::size_t i = 0; i < rows; i++)
     {
-        a(i, 0) = a(i, 0) * num;
+        for(std::size_t j = 0; j < cols; j++)
+        {
+            a(i, j) = a(i, j) * num;
+        }
+    }
+
+    return a;
+}
+
+/**
+ * Multiply a Matrix for a scalar
+ *
+ * @param a The Matrix to operate
+ * @param num The scalar
+ * @return The Matrix after the operation
+ */
+template<typename T>
+Matrix<T> operator*(double num, Matrix<T>& a)
+{
+    auto [rows, cols] = a.shape();
+    for(std::size_t i = 0; i < rows; i++)
+    {
+        for(std::size_t j = 0; j < cols; j++)
+        {
+            a(i, j) = a(i, j) * num;
+        }
     }
 
     return a;
