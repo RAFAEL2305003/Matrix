@@ -326,7 +326,7 @@ Matrix<T> operator-(const Matrix<T>& a, const Matrix<T>& b)
  * @return The Matrix after operation
  */
 template<typename T>
-Matrix<T> operator*(const Matrix<T>& a, const Matrix<T>& b)
+Matrix<T> hadamard(const Matrix<T>& a, const Matrix<T>& b)
 {
     auto [a_rows, a_cols] = a.shape();
     auto [b_rows, b_cols] = b.shape();
