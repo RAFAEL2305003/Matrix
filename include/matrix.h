@@ -80,7 +80,6 @@ class Matrix
             return elements[i * cols + j];
         }
 
-
         /**
          * @brief Access and returns the item at i and j
          *
@@ -94,7 +93,6 @@ class Matrix
             assert(i < rows && j < cols);
             return elements[i * cols + j];
         }
-
 
         /**
          * @brief Transposes a Matrix
