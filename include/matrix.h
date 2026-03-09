@@ -215,6 +215,28 @@ Matrix<T> operator*(double num, Matrix<T>& a)
 }
 
 /**
+ * Multiply a Matrix for a scalar
+ *
+ * @param a The Matrix to operate
+ * @param num The scalar
+ * @return The Matrix after the operation
+ */
+template<typename T>
+Matrix<T> operator*(Matrix<T>& a, double num)
+{
+    auto [rows, cols] = a.shape();
+    for(std::size_t i = 0; i < rows; i++)
+    {
+        for(std::size_t j = 0; j < cols; j++)
+        {
+            a(i, j) = a(i, j) * num;
+        }
+    }
+
+    return a;
+}
+
+/**
  * @brief Adds two Matrices
  *
  * Add two Matrices if both have the same dimensions
