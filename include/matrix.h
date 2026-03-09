@@ -332,7 +332,7 @@ Matrix<T> hadamard(const Matrix<T>& a, const Matrix<T>& b)
     auto [b_rows, b_cols] = b.shape();
     assert(a_cols == b_rows);
 
-    Matrix c(a_rows, b_cols);
+    Matrix<T> c(a_rows, b_cols);
     auto [rows, cols] = c.shape();
     for(std::size_t i = 0; i < rows; i++)
     {
